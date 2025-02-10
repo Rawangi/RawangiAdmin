@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Stop</title>
+</head>
+<body>
+    <h1>Add Stop</h1>
+    <form id="stopForm">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" required><br><br>
+        
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" required><br><br>
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required><br><br>
+        
+        <button type="button" onclick="submitStop()">Submit</button>
+    </form>
+
+    <script>
+        function submitStop() {
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+
+            const data = {
+                type: "Feature",
+                geometry: {
+                    type: "Point",
+                    coordinates: [parseFloat(longitude), parseFloat(latitude)]
+                },
+                properties: {
+                    name: name,
+                    description: description
+                }
+            };
+
+            fetch('https://api.mapbox.com/datasets/v1/{username}/{dataset_id}/features?access_token={your_access_token}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html></form></html>

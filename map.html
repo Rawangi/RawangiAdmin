@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox Stops</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { width: 100vw; height: 100vh; }
+        #navigate-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1;
+            padding: 10px 20px;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <button id="navigate-button" onclick="navigateToStopPage()">Go to Stop Page</button>
+    <script>
+        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-73.985428, 40.748817], // Initial center
+            zoom: 12
+        });
+
+        // Fetch dataset stops
+        fetch('https://api.mapbox.com/datasets/v1/YOUR_USERNAME/YOUR_DATASET_ID/features?access_token=pk.eyJ1IjoiYmlsYWwwNjEyIiwiYSI6ImNtNnJsYzZtMDAwNzYya3M5b2VkZmhzb3gifQ.RMDMKYC3OTc_7jCh2DbwRQ')
+            .then(response => response.json())
+            .then(data => {
+                data.features.forEach(feature => {
+                    new mapboxgl.Marker()
+                        .setLngLat(feature.geometry.coordinates)
+                        .setPopup(new mapboxgl.Popup().setText(feature.properties.name))
+                        .addTo(map);
+                });
+            });
+
+        function navigateToStopPage() {
+            window.location.href = 'stop.html';
+        }
+    </script>
+</body>
+</html>
