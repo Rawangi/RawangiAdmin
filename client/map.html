@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapbox Stops</title>
+    <script src="config.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
     <style>
@@ -25,17 +26,18 @@
     <div id="map"></div>
     <button id="navigate-button" onclick="navigateToStopPage()">Go to Stop Page</button>
     <script>
-        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        // TODO:
+        mapboxgl.accessToken = CONFIG.MAPBOX_ACCESS_TOKEN;
 
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [-73.985428, 40.748817], // Initial center
+            center: [67.0609727020614, 24.879413709791493], // Initial center
             zoom: 12
         });
 
         // Fetch dataset stops
-        fetch('https://api.mapbox.com/datasets/v1/YOUR_USERNAME/YOUR_DATASET_ID/features?access_token=pk.eyJ1IjoiYmlsYWwwNjEyIiwiYSI6ImNtNnJsYzZtMDAwNzYya3M5b2VkZmhzb3gifQ.RMDMKYC3OTc_7jCh2DbwRQ')
+        fetch('http://localhost:3000/dataset')
             .then(response => response.json())
             .then(data => {
                 data.features.forEach(feature => {
